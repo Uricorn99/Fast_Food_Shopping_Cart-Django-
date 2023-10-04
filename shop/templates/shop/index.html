@@ -112,33 +112,30 @@
     </div>
  
     <script type="text/javascript">
-        // 在页面加载时初始化cart字典为0
+
         $(document).ready(function() {
             var cart = {};
             localStorage.setItem('cart', JSON.stringify(cart));
         });
 
-        // 检查是否是通过分页导航跳转到此页
+
         var isPaginationNavigation = false;
-        
-        // 检查是否有page参数，如果有，则是分页导航
+
         var urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('page')) {
             isPaginationNavigation = true;
         }
 
-        // 获取localStorage中的cart数据
         var cart = localStorage.getItem('cart');
 
-        // 如果不是分页导航，则将cart数据发送到服务器
         if (!isPaginationNavigation && cart !== null) {
             $.ajax({
                 type: "POST",
-                url: "/update_cart/",  // 请根据实际URL配置
+                url: "/update_cart/",  
                 data: JSON.stringify({ cart: JSON.parse(cart) }),
                 contentType: "application/json",
                 success: function(data) {
-                    // 处理成功响应
+
                     console.log('Cart data sent to server:', data);
                 },
                 error: function(error) {
@@ -150,12 +147,11 @@
         console.log('this is working');
         var cart = {};
 
-        // 检查localStorage中是否有购物车数据
         if (localStorage.getItem('cart') !== null) {
             cart = JSON.parse(localStorage.getItem('cart'));
         }
 
-        // 更新购物车按钮上的数量
+
         function updateCartCount() {
             var cartCount = 0;
 
@@ -166,30 +162,27 @@
             $("#cart").text("購物車(" + cartCount + ")");
         }
 
-        // 点击"Add to Cart"按钮的事件处理程序
         $(document).on('click', '.atc', function() {
             console.log('The add to cart is clicked');
             var productId = $(this).data("product-id").toString();
             console.log(productId);
 
-            // 将商品添加到购物车或增加数量
             if (cart[productId] !== undefined) {
                 cart[productId]++;
             } else {
                 cart[productId] = 1;
             }
 
-            // 将购物车内容保存到localStorage
+
             localStorage.setItem('cart', JSON.stringify(cart));
 
-            // 更新购物车按钮上的数量
+
             updateCartCount();
 
-            // 以下是为了确认 cart 的更新情况
             console.log(cart);
         });
 
-        // 初始化购物车按钮上的数量
+
         updateCartCount();
     </script>
 
